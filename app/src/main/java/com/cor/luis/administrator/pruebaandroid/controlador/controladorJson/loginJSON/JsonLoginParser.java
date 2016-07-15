@@ -9,7 +9,7 @@ import java.io.InputStream;
  */
 public class JsonLoginParser {
     public Login readJsonStream(InputStream in) {
-
+        //TODO: DECIFRAR EL TOKEN
         return new Login();
     }
 }
