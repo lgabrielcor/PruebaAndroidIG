@@ -9,6 +9,7 @@ import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.logi
 import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.prospectoJSON.JsonServicioProspecto;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudLogin;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudProspecto;
+import com.cor.luis.administrator.pruebaandroid.controlador.loggin.logginEvento;
 import com.cor.luis.administrator.pruebaandroid.modelo.Login;
 import com.cor.luis.administrator.pruebaandroid.modelo.Prospecto;
 
@@ -31,6 +32,10 @@ public class LoginActivity extends AppCompatActivity {
         //crudLogineo();
 
         //crudProspecteo();
+
+        logginEvento.insertaLog("inicializa log");
+
+        Log.d("lohggin", logginEvento.obtieneLog());
     }
 
     private void crudProspecteo() {
