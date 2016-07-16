@@ -1,5 +1,6 @@
 package com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.loginJSON;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import java.io.BufferedInputStream;
@@ -14,6 +15,7 @@ import com.cor.luis.administrator.pruebaandroid.modelo.Login;
  */
 public class JsonServicioLogin extends AsyncTask<URL, Void, Login> {
     HttpURLConnection con = null;
+
 
     @Override
     protected Login doInBackground(URL... params) {
@@ -40,4 +42,5 @@ public class JsonServicioLogin extends AsyncTask<URL, Void, Login> {
         }
         return login;
     }
+
 }
