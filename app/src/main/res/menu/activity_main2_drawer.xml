@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/dashboard"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="DashBoard" />
+        <item
+            android:id="@+id/prospectos"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Prospectos" />
+        <item
+            android:id="@+id/cerrarsesion"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Cerrar sesion" />
+    </group>
+
+</menu>
