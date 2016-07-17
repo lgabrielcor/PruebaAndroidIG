@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +16,9 @@ import android.widget.Toast;
 
 import com.cor.luis.administrator.pruebaandroid.R;
 import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.loginJSON.JsonServicioLogin;
-import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.prospectoJSON.JsonServicioProspecto;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudLogin;
 import com.cor.luis.administrator.pruebaandroid.controlador.loggin.logginEvento;
+import com.cor.luis.administrator.pruebaandroid.controlador.network.EstadoInternet;
 import com.cor.luis.administrator.pruebaandroid.modelo.Login;
 
 import java.net.MalformedURLException;
@@ -32,7 +31,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class FragmentLogin extends Fragment {
 
-    boolean esValido;
+    boolean EmailesValido;
     public FragmentLogin() {
         // Required empty public constructor
     }
@@ -58,36 +57,42 @@ public class FragmentLogin extends Fragment {
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(esValido){
+                if(EmailesValido){
 
                     try {
 
-                        URL url = new URL("http://directotesting.igapps.co/application/login?email="+email.getText().toString().trim()+"&amp;password="+password.getText().toString().trim());
+                        if(EstadoInternet.isOnline(getActivity().getApplicationContext())) {
 
-                        JsonServicioLogin servicioLogin = new JsonServicioLogin();
-                        servicioLogin.execute(url);
-                        Login login = servicioLogin.get();
-                        login.setPassword(password.getText().toString().trim());
+                            URL url = new URL("http://directotesting.igapps.co/application/login?email=" + email.getText().toString().trim() + "&amp;password=" + password.getText().toString().trim());
 
-                        if(login.getToken().contains("error")){
-                            Toast.makeText(getActivity().getApplicationContext(),"Autenticacion no valida",Toast.LENGTH_SHORT).show();
-                            logginEvento.insertaLog(getActivity().getApplicationContext(),"autenticacion invalida");
-                        }else
-                        {
-                            CrudLogin crudLogin = new CrudLogin(getActivity().getApplicationContext());
-                            crudLogin.insertar(login);
+                            JsonServicioLogin servicioLogin = new JsonServicioLogin();
+                            servicioLogin.execute(url);
+                            Login login = servicioLogin.get();
+                            login.setPassword(password.getText().toString().trim());
 
-                            //enviar el token a la actividad de prospectos
-                            Fragment fragment = new FragmentProspecto();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("TOKEN",login.getToken());
-                            fragment.setArguments(bundle);
+                            if (login.getToken().contains("error")) {
+                                Toast.makeText(getActivity().getApplicationContext(), "Autenticacion no valida", Toast.LENGTH_SHORT).show();
+                                logginEvento.insertaLog(getActivity().getApplicationContext(), "autenticacion invalida");
+                            } else {
+                                CrudLogin crudLogin = new CrudLogin(getActivity().getApplicationContext());
+                                crudLogin.insertar(login);
 
-                            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                //enviar el token a la actividad de prospectos
+                                Fragment fragment = new FragmentProspecto();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("TOKEN", login.getToken());
+                                fragment.setArguments(bundle);
 
-                            getActivity().getFragmentManager().beginTransaction().replace(R.id.contentMag, fragment).commit();
-                            logginEvento.insertaLog(getActivity().getApplicationContext(),"Se obtiene una sesion valida");
+                                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                                getActivity().getFragmentManager().beginTransaction().replace(R.id.contentMag, fragment).commit();
+                                logginEvento.insertaLog(getActivity().getApplicationContext(), "Se obtiene una sesion valida");
+                                logginEvento.insertaLog(getActivity().getApplicationContext(),"Ingreso correcto");
+                            }
+                        }else{
+                            logginEvento.insertaLog(getActivity().getApplicationContext(),"No hay acceso a Internet");
+                            Toast.makeText(getActivity().getApplicationContext(), "No hay acceso a Internet", Toast.LENGTH_SHORT).show();
                         }
                     }
                     catch (MalformedURLException e) {
@@ -98,7 +103,8 @@ public class FragmentLogin extends Fragment {
                         e.printStackTrace();
                     }
 
-                    logginEvento.insertaLog(getActivity().getApplicationContext(),"Ingreso correcto");
+
+
                 }else{
                     email.setError("El correo electronico es invalido");
                     logginEvento.insertaLog(getActivity().getApplicationContext(),"Intento de ingreso fallido");
@@ -126,11 +132,11 @@ public class FragmentLogin extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (email.getText().toString().trim().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+") && s.length() > 0)
                 {
-                    esValido=true;
+                    EmailesValido =true;
                 }
                 else
                 {
-                    esValido=false;
+                    EmailesValido =false;
                 }
             }
         });
