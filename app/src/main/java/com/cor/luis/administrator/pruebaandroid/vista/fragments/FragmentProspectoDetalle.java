@@ -15,6 +15,7 @@ import android.widget.SpinnerAdapter;
 
 import com.cor.luis.administrator.pruebaandroid.R;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudProspecto;
+import com.cor.luis.administrator.pruebaandroid.controlador.loggin.logginEvento;
 import com.cor.luis.administrator.pruebaandroid.modelo.Estado;
 import com.cor.luis.administrator.pruebaandroid.modelo.Prospecto;
 
@@ -36,6 +37,10 @@ public class FragmentProspectoDetalle extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        logginEvento.insertaLog(getActivity().getApplicationContext(),"este es un evento");
+
+        logginEvento.obtieneLog(getActivity().getApplicationContext());
 
         final View view = inflater.inflate(R.layout.fragment_prospecto_detalle, container, false);
 

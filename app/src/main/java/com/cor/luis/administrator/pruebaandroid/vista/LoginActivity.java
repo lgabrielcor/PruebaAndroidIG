@@ -25,17 +25,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        logginEvento.insertaLog(this.getApplicationContext(),"inicializa log");
 
-            //jsonRequest();
-
-
-        //crudLogineo();
-
-        //crudProspecteo();
-
-        logginEvento.insertaLog("inicializa log");
-
-        Log.d("lohggin", logginEvento.obtieneLog());
+        Log.d("lohggin", logginEvento.obtieneLog(this.getApplicationContext()));
     }
 
     private void crudProspecteo() {
@@ -84,7 +76,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void jsonRequest() throws MalformedURLException, InterruptedException, ExecutionException {
-        //URL url = new URL("http://directotesting.igapps.co/application/login?email=directo@directo.com&amp;password=directo123");
 
         URL url = new URL("http://directotesting.igapps.co/sch/prospects.json");
         JsonServicioProspecto json = new JsonServicioProspecto("9FQn5gzKA9k2LWyBMZtM");

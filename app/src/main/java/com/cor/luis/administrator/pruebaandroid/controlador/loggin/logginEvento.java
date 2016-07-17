@@ -1,5 +1,8 @@
 package com.cor.luis.administrator.pruebaandroid.controlador.loggin;
 
+import android.content.Context;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,10 +16,12 @@ import java.io.IOException;
 public class logginEvento {
     //TODO: crear el metodo para retornar eventos
 
-    public static final String logFileSTR ="sdcard/log.txt";
-    public static void insertaLog(String text)
+
+    public static final String logFileSTR = "log.txt";
+    public static void insertaLog(Context context, String text)
     {
-        File logFile = new File(logFileSTR);
+        File logFile = new File(context.getFilesDir().getPath().toString()+"/"+logFileSTR);
+        Log.d("ruta de app", context.getFilesDir().getPath().toString()+"/"+logFileSTR);
         if (!logFile.exists())
         {
             try
@@ -41,10 +46,10 @@ public class logginEvento {
         }
     }
 
-    public static String obtieneLog(){
+    public static String obtieneLog(Context context){
 
         //Get the text file
-        File file = new File(logFileSTR);
+        File file = new File(context.getFilesDir().getPath().toString()+"/"+logFileSTR);
 
 //Read text from file
         StringBuilder text = new StringBuilder();
@@ -62,6 +67,8 @@ public class logginEvento {
         catch (IOException e) {
             //You'll need to add proper error handling here
         }
+
+        Log.d("datos ", text.toString());
         return text.toString();
     }
 }
