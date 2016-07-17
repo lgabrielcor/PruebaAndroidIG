@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import com.cor.luis.administrator.pruebaandroid.R;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudLogin;
 import com.cor.luis.administrator.pruebaandroid.controlador.loggin.logginEvento;
+import com.cor.luis.administrator.pruebaandroid.controlador.secutiry.Cifrar;
 import com.cor.luis.administrator.pruebaandroid.modelo.Login;
 import com.cor.luis.administrator.pruebaandroid.vista.fragments.FragmentLogin;
 import com.cor.luis.administrator.pruebaandroid.vista.fragments.FragmentProspecto;
@@ -29,7 +30,10 @@ public class MainActivity extends ActivityMenu {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+        pruebaMD5();
         ConfiguraMenuBar();
+
+
 
         FragmentManager FM = this.getFragmentManager();
         FragmentTransaction FT = FM.beginTransaction();
@@ -56,6 +60,16 @@ public class MainActivity extends ActivityMenu {
             FT.add(R.id.contentMag, fragment);
             FT.commit();
         }
+
+    }
+
+    private void pruebaMD5() {
+
+        Log.d("cifrado==============", Cifrar.cifrarMD5("12345"));
+
+        String cifrado = Cifrar.cifrarMD5("12345");
+
+        Log.d("descifrado=========", Cifrar.descifrarMD5(cifrado));
 
     }
 

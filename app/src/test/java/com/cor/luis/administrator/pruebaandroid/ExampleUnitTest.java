@@ -4,6 +4,7 @@ import android.content.Context;
 import android.test.AndroidTestCase;
 
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudLogin;
+import com.cor.luis.administrator.pruebaandroid.controlador.secutiry.Cifrar;
 import com.cor.luis.administrator.pruebaandroid.modelo.Login;
 
 import org.junit.Test;
@@ -26,5 +27,21 @@ public class ExampleUnitTest extends AndroidTestCase{
         login.setEmail("email2");
 
         assertTrue("insertado", crud.insertar(login));
+    }
+
+    @Test
+    public void probarEncodeMD5(){
+
+
+    }
+
+    @Test
+    public void probarDecodeMD5(){
+
+        String cifrado = Cifrar.cifrarMD5("12345");
+
+        String descifrado = Cifrar.descifrarMD5(cifrado);
+
+        assertTrue("insertado", !cifrado.isEmpty());
     }
 }
