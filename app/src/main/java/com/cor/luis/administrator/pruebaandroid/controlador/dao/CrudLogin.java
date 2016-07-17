@@ -54,6 +54,8 @@ public class CrudLogin extends SQLiteOpenHelper implements ICrud {
 
         final long insertado = db.insert("login", null, valores);
 
+        db.close();
+
         return insertado>-1?true:false;
     }
 
@@ -113,6 +115,9 @@ public class CrudLogin extends SQLiteOpenHelper implements ICrud {
 
     @Override
     public boolean borrarTodosLosItems() {
-        return false;
+        db = getWritableDatabase();
+        db.delete("login", null, null);
+        db.close();
+        return true;
     }
 }

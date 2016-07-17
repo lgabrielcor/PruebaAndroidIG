@@ -1,5 +1,6 @@
 package com.cor.luis.administrator.pruebaandroid.vista;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,9 @@ import android.view.MenuItem;
 
 import com.cor.luis.administrator.pruebaandroid.R;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudLogin;
+import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudProspecto;
+import com.cor.luis.administrator.pruebaandroid.vista.fragments.FragmentLogin;
+import com.cor.luis.administrator.pruebaandroid.vista.fragments.FragmentProspecto;
 
 /**
  * Created by luisgabrielcorredorcombita on 16/07/16.
@@ -40,8 +44,16 @@ public class ActivityMenu extends AppCompatActivity implements NavigationView.On
             // Handle the camera action
             Log.d("cama","ra");
         } else if (id == R.id.prospectos) {
-
+            Fragment fragment = new FragmentProspecto();
+            getFragmentManager().beginTransaction().replace(R.id.contentMag, fragment).commit();
         } else if (id == R.id.cerrarsesion) {
+            CrudLogin crudLogin = new CrudLogin(this.getApplicationContext());
+            CrudProspecto crudProspecto = new CrudProspecto(this.getApplicationContext());
+            crudLogin.borrarTodosLosItems();
+            crudProspecto.borrarTodosLosItems();
+
+            Fragment fragment = new FragmentLogin();
+            getFragmentManager().beginTransaction().replace(R.id.contentMag, fragment).commit();
 
         }
 

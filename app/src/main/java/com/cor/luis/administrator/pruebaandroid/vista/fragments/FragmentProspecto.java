@@ -41,7 +41,11 @@ public class FragmentProspecto extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_prospecto, container, false);
         Bundle bundle = getArguments();
-        String token = bundle.getString("TOKEN");
+
+        String token="";
+        if(bundle != null)
+          token = bundle.getString("TOKEN");
+
         ListView prospectoListView = (ListView)view.findViewById(R.id.listViewProspecto);
 
 
@@ -73,22 +77,37 @@ public class FragmentProspecto extends Fragment {
             e.printStackTrace();
         }
             adaptador = new ProspectosAdapterList(getActivity(), prospectos1);
+            prospectos = crudProspecto.obtenerTodosLosItems();
         }
+
 
         prospectoListView.setAdapter(adaptador);
 
+        final List<Object> finalProspectos = prospectos;
         prospectoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Fragment fragment = new FragmentProspectoDetalle();
+                Bundle bundle = new Bundle();
 
-                Log.d("se selecciona el item ", position+"");
+                Prospecto prospecto = (Prospecto) finalProspectos.get(position);
+                bundle.putString("nombre",prospecto.getNombre());
+                bundle.putString("apellido",prospecto.getApellido());
+                bundle.putString("cedula",prospecto.getCedula());
+                bundle.putString("telefono",prospecto.getTelefono());
+                bundle.putString("estado",prospecto.getEstado()+"");
+
+
+                fragment.setArguments(bundle);
+
+                getActivity().getFragmentManager().beginTransaction().replace(R.id.contentMag, fragment).commit();
+
             }
         });
 
         return view;
     }
-
 
 
 }
