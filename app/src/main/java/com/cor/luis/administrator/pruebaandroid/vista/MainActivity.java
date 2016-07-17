@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import com.cor.luis.administrator.pruebaandroid.R;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudLogin;
+import com.cor.luis.administrator.pruebaandroid.controlador.loggin.logginEvento;
 import com.cor.luis.administrator.pruebaandroid.modelo.Login;
 import com.cor.luis.administrator.pruebaandroid.vista.fragments.FragmentLogin;
 import com.cor.luis.administrator.pruebaandroid.vista.fragments.FragmentProspecto;
@@ -38,6 +39,7 @@ public class MainActivity extends ActivityMenu {
         List<Object> logins = crudLogin.obtenerTodosLosItems();
         if(logins.size()>0)
         {
+            logginEvento.insertaLog(getApplicationContext(),"Usuario no registrado");
             Login usuarioGrabado= (Login)logins.get(0);
             Fragment fragment = new FragmentProspecto();
             Bundle bundle = new Bundle();
@@ -49,6 +51,7 @@ public class MainActivity extends ActivityMenu {
         }
         else
         {
+            logginEvento.insertaLog(getApplicationContext(),"Usuario existente");
             Fragment fragment = new FragmentLogin();
             FT.add(R.id.contentMag, fragment);
             FT.commit();

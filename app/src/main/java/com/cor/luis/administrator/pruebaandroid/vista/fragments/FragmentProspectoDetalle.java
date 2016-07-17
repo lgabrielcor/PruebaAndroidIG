@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,10 +39,6 @@ public class FragmentProspectoDetalle extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        logginEvento.insertaLog(getActivity().getApplicationContext(),"este es un evento");
-
-        logginEvento.obtieneLog(getActivity().getApplicationContext());
-
         final View view = inflater.inflate(R.layout.fragment_prospecto_detalle, container, false);
 
         final Prospecto prospecto = new Prospecto();
@@ -72,7 +69,7 @@ public class FragmentProspectoDetalle extends Fragment {
         nombre.setEnabled(false);
         apellido.setEnabled(false);
         telefono.setEnabled(false);
-        telefono.setEnabled(false);
+        estadospn.setEnabled(false);
 
 
         nombre.setText(prospecto.getNombre());
@@ -92,11 +89,13 @@ public class FragmentProspectoDetalle extends Fragment {
                     telefono.setEnabled(true);
                     estadospn.setEnabled(true);
                     guardarbool=true;
+                    logginEvento.insertaLog(getActivity().getApplicationContext(),"Se inicia la edicion de un prospecto");
                 }else{
                     editar.setText("Editar");
                     prospecto.setApellido(apellido.getText().toString());
                     prospecto.setNombre(nombre.getText().toString());
                     prospecto.setTelefono(telefono.getText().toString());
+                    prospecto.setEstado(estadospn.getSelectedItemPosition());
 
                     CrudProspecto crudProspecto = new CrudProspecto(getActivity().getApplicationContext());
                     crudProspecto.actualizarItem(prospecto,prospecto);
@@ -104,8 +103,8 @@ public class FragmentProspectoDetalle extends Fragment {
                     nombre.setEnabled(false);
                     apellido.setEnabled(false);
                     telefono.setEnabled(false);
-                    telefono.setEnabled(false);
-
+                    estadospn.setEnabled(false);
+                    logginEvento.insertaLog(getActivity().getApplicationContext(),"Se cambia el prospecto "+apellido.getText().toString());
                     guardarbool=false;
 
                 }
@@ -120,13 +119,13 @@ public class FragmentProspectoDetalle extends Fragment {
             }
         });
 
-        configSpinner(estadospn);
+        configSpinner(estadospn, prospecto.getEstado());
 
 
         return view;
     }
 
-    private void configSpinner(Spinner estadospn) {
+    private void configSpinner(Spinner estadospn, int SelectedItem) {
         //lista de estados
         LinkedList estados = new LinkedList();
         estados.add("pending");
@@ -135,9 +134,27 @@ public class FragmentProspectoDetalle extends Fragment {
         estados.add("rejected");
         estados.add("disabled");
 
-        ArrayAdapter spinner_adapter = new ArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, estados);
+        ArrayAdapter spinner_adapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, estados);
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         estadospn.setAdapter(spinner_adapter);
+
+
+        estadospn.setSelection(SelectedItem);
+
+        estadospn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("item seleccionado",position+"");
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
     }
 
 }

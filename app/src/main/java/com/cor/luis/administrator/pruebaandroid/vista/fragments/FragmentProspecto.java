@@ -15,6 +15,7 @@ import com.cor.luis.administrator.pruebaandroid.R;
 import com.cor.luis.administrator.pruebaandroid.controlador.adapter.ProspectosAdapterList;
 import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.prospectoJSON.JsonServicioProspecto;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudProspecto;
+import com.cor.luis.administrator.pruebaandroid.controlador.loggin.logginEvento;
 import com.cor.luis.administrator.pruebaandroid.modelo.Prospecto;
 
 import java.net.MalformedURLException;
@@ -57,6 +58,7 @@ public class FragmentProspecto extends Fragment {
 
         if(prospectos.size()>0){
             adaptador = new ProspectosAdapterList(getActivity(), prospectos);
+            logginEvento.insertaLog(getActivity().getApplicationContext(),"Se obtiene los prospectos de la base de datos");
         }else
         {
             List<Prospecto> prospectos1 = new ArrayList<>();
@@ -67,6 +69,7 @@ public class FragmentProspecto extends Fragment {
 
                 crudProspecto.borrarTodosLosItems();
                 crudProspecto.insertaLista(prospectos1);
+                logginEvento.insertaLog(getActivity().getApplicationContext(),"Se obtienen los prospectos del servicio internet");
             }
             catch (MalformedURLException e) {
             e.printStackTrace();

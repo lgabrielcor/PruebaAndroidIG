@@ -82,9 +82,10 @@
 
             <Spinner
                 android:layout_width="wrap_content"
-                android:layout_height="87dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/estadospn"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"
+                />
 
         </LinearLayout>
 

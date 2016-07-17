@@ -19,6 +19,7 @@ import com.cor.luis.administrator.pruebaandroid.R;
 import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.loginJSON.JsonServicioLogin;
 import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.prospectoJSON.JsonServicioProspecto;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudLogin;
+import com.cor.luis.administrator.pruebaandroid.controlador.loggin.logginEvento;
 import com.cor.luis.administrator.pruebaandroid.modelo.Login;
 
 import java.net.MalformedURLException;
@@ -70,6 +71,7 @@ public class FragmentLogin extends Fragment {
 
                         if(login.getToken().contains("error")){
                             Toast.makeText(getActivity().getApplicationContext(),"Autenticacion no valida",Toast.LENGTH_SHORT).show();
+                            logginEvento.insertaLog(getActivity().getApplicationContext(),"autenticacion invalida");
                         }else
                         {
                             CrudLogin crudLogin = new CrudLogin(getActivity().getApplicationContext());
@@ -85,6 +87,7 @@ public class FragmentLogin extends Fragment {
                             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
                             getActivity().getFragmentManager().beginTransaction().replace(R.id.contentMag, fragment).commit();
+                            logginEvento.insertaLog(getActivity().getApplicationContext(),"Se obtiene una sesion valida");
                         }
                     }
                     catch (MalformedURLException e) {
@@ -95,8 +98,10 @@ public class FragmentLogin extends Fragment {
                         e.printStackTrace();
                     }
 
+                    logginEvento.insertaLog(getActivity().getApplicationContext(),"Ingreso correcto");
                 }else{
                     email.setError("El correo electronico es invalido");
+                    logginEvento.insertaLog(getActivity().getApplicationContext(),"Intento de ingreso fallido");
                 }
             }
         });

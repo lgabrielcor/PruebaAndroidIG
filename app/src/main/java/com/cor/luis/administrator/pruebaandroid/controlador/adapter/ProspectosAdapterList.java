@@ -39,12 +39,36 @@ public class ProspectosAdapterList extends ArrayAdapter {
 
         Prospecto prospecto = (Prospecto) getItem(position);
 
-        apellido.setText(prospecto.getApellido()+" ");
+        apellido.setText("Nombre: "+prospecto.getApellido()+" ");
         nombre.setText(prospecto.getNombre());
-        telefono.setText(prospecto.getTelefono());
-        estado.setText(prospecto.getEstado()+" ");
-        cedula.setText(prospecto.getCedula());
+        telefono.setText("Teléfono: "+prospecto.getTelefono());
+        estado.setText("Estado: "+getEstadoNombre(prospecto.getEstado()));
+        cedula.setText("Cédula: "+prospecto.getCedula());
 
         return view;
+    }
+
+    private String getEstadoNombre(int estado) {
+
+        if(estado==0)
+        {
+            return "pending";
+
+        }else if(estado == 1)
+        {
+            return "approved";
+        }
+        else if(estado == 2)
+        {
+            return "accepted";
+        }
+        else if(estado == 3)
+        {
+            return "rejected";
+        }
+        else
+        {
+            return "disabled";
+        }
     }
 }

@@ -16,6 +16,7 @@ import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudLogin;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudProspecto;
 import com.cor.luis.administrator.pruebaandroid.vista.fragments.FragmentLogin;
 import com.cor.luis.administrator.pruebaandroid.vista.fragments.FragmentProspecto;
+import com.cor.luis.administrator.pruebaandroid.vista.fragments.logfragment;
 
 /**
  * Created by luisgabrielcorredorcombita on 16/07/16.
@@ -41,8 +42,8 @@ public class ActivityMenu extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.dashboard) {
-            // Handle the camera action
-            Log.d("cama","ra");
+            Fragment fragment = new logfragment();
+            getFragmentManager().beginTransaction().replace(R.id.contentMag, fragment).commit();
         } else if (id == R.id.prospectos) {
             Fragment fragment = new FragmentProspecto();
             getFragmentManager().beginTransaction().replace(R.id.contentMag, fragment).commit();
