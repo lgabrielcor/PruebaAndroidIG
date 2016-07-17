@@ -20,16 +20,22 @@ public class JsonLoginParser {
         Login login = new Login();
 
         try{
-            JSONObject reader = new JSONObject(convertStreamToString(in));
+            String jsonstr = convertStreamToString(in);
+            JSONObject reader = new JSONObject(jsonstr);
 
-            login.setEmail(reader.getString("email"));
-            login.setToken(reader.getString("authToken"));
+            if(jsonstr.contains("error"))
+            {
+                login.setToken("error");
+            }
+            else{
 
+                login.setEmail(reader.getString("email"));
+                login.setToken(reader.getString("authToken"));
+            }
         }catch (JSONException e)
         {
             e.printStackTrace();
         }
-
         return login;
     }
 

@@ -21,7 +21,7 @@
 
         </activity>
         <activity
-            android:name=".MainActivity2"
+            android:name=".vista.MainActivity"
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar">
 

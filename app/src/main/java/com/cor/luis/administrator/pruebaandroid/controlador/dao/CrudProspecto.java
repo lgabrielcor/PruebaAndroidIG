@@ -75,27 +75,28 @@ public class CrudProspecto extends SQLiteOpenHelper implements ICrud {
     }
 
     @Override
-    public List<Prospecto> obtenerTodosLosItems() {
-        List<Prospecto> prospectos= new ArrayList<>();
+    public List<Object> obtenerTodosLosItems() {
+        List<Object> prospectos= new ArrayList<>();
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query("prospecto", null,
                 null, null, null, null, null, null);
 
 
-        c.moveToFirst();
-        do{
-            Prospecto prospecto = new Prospecto();
+        if(c.getCount()>0) {
+            c.moveToFirst();
+            do {
+                Prospecto prospecto = new Prospecto();
 
-            prospecto.setApellido(c.getString(1));
-            prospecto.setTelefono(c.getString(3));
-            prospecto.setCedula(c.getString(2));
-            prospecto.setEstado(c.getInt(4));
-            prospecto.setNombre(c.getString(0));
+                prospecto.setApellido(c.getString(1));
+                prospecto.setTelefono(c.getString(3));
+                prospecto.setCedula(c.getString(2));
+                prospecto.setEstado(c.getInt(4));
+                prospecto.setNombre(c.getString(0));
 
-            prospectos.add(prospecto);
-        }while(c.moveToNext());
-
+                prospectos.add(prospecto);
+            } while (c.moveToNext());
+        }
         db.close();
         c.close();
 

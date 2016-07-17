@@ -28,7 +28,7 @@ public class JsonServicioLogin extends AsyncTask<URL, Void, Login> {
             int statusCode = con.getResponseCode();
 
             if(statusCode!= 200){
-                throw new Exception("Error en fuente de datos");
+                login.setToken("error");
             }else{
                 InputStream in = new BufferedInputStream(con.getInputStream());
                 JsonLoginParser parser = new JsonLoginParser();

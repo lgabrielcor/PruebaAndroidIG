@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.cor.luis.administrator.pruebaandroid.modelo.Login;
 import com.cor.luis.administrator.pruebaandroid.modelo.Prospecto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -78,8 +79,24 @@ public class CrudLogin extends SQLiteOpenHelper implements ICrud {
     }
 
     @Override
-    public List<Prospecto> obtenerTodosLosItems() {
-        return null;
+    public List<Object> obtenerTodosLosItems() {
+        List<Object> logins= new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query("login", null,
+                null, null, null, null, null, null);
+
+        if(c.getCount()>0) {
+            c.moveToFirst();
+            Login login = new Login();
+            login.setEmail(c.getString(0));
+            login.setPassword(c.getString(1));
+            login.setToken(c.getString(2));
+
+            logins.add(login);
+
+        }
+        return logins;
     }
 
     @Override

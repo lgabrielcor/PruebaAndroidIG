@@ -10,7 +10,7 @@ import java.util.List;
 public interface ICrud {
     boolean insertar(Object o);
     Object ObtenerItem(String id);
-    List<Prospecto> obtenerTodosLosItems();
+    List<Object> obtenerTodosLosItems();
     boolean actualizarItem(Object nuevo, Object anterior);
     boolean borrarItem(Object elemento);
     boolean borrarTodosLosItems();
