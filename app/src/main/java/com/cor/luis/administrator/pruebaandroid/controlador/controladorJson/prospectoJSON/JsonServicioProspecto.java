@@ -5,10 +5,7 @@ import android.os.AsyncTask;
 import com.cor.luis.administrator.pruebaandroid.modelo.Prospecto;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -19,6 +16,11 @@ import java.util.List;
 public class JsonServicioProspecto extends AsyncTask<URL, Void, List<Prospecto>> {
 
     HttpURLConnection con = null;
+    private String Tokenstr = "";
+
+    public JsonServicioProspecto(String token){
+        setTokenstr(token);
+    }
 
     @Override
     protected List<Prospecto> doInBackground(URL... params) {
@@ -29,7 +31,7 @@ public class JsonServicioProspecto extends AsyncTask<URL, Void, List<Prospecto>>
 
             con = (HttpURLConnection)params[0].openConnection();
 
-            con.setRequestProperty ("TOKEN", "9FQn5gzKA9k2LWyBMZtM");
+            con.setRequestProperty ("TOKEN", this.getTokenstr());
 
             con.setConnectTimeout(15000);
             con.setReadTimeout(10000);
@@ -54,4 +56,11 @@ public class JsonServicioProspecto extends AsyncTask<URL, Void, List<Prospecto>>
         return prospectos;
     }
 
+    public String getTokenstr() {
+        return Tokenstr;
+    }
+
+    public void setTokenstr(String tokenstr) {
+        Tokenstr = tokenstr;
+    }
 }

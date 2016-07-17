@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.cor.luis.administrator.pruebaandroid.modelo.Prospecto;
 
@@ -45,8 +46,28 @@ public class CrudProspecto extends SQLiteOpenHelper implements ICrud {
 
         final long insertado = db.insert("prospecto", null, valores);
 
+        db.close();
         return insertado>-1?true:false;
 
+    }
+
+
+    public void insertaLista(List<Prospecto> lista){
+        db = getWritableDatabase();
+
+        for(int i=0;i< lista.size(); i++){
+            Prospecto prospecto = lista.get(i);
+            ContentValues valores = new ContentValues();
+            valores.put("nombre", prospecto.getNombre());
+            valores.put("apellido", prospecto.getApellido());
+            valores.put("cedula", prospecto.getCedula());
+            valores.put("telefono", prospecto.getTelefono());
+            valores.put("estado", prospecto.getEstado());
+
+            final long insertado = db.insert("prospecto", null, valores);
+
+        }
+        db.close();
     }
 
     @Override

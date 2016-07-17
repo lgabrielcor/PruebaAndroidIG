@@ -95,16 +95,6 @@ public class FragmentLogin extends Fragment {
                 }
             }
         });
-
-
-
-
-            //enviar los datos al servicio
-            //si los datos son correctos
-
-            //si el login es incorrecto
-                //mandar un Toast con la advertencia
-
         return view;
     }
 
