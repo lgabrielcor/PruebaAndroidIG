@@ -7,12 +7,9 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 
 import com.cor.luis.administrator.pruebaandroid.R;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudLogin;
@@ -32,8 +29,6 @@ public class MainActivity extends ActivityMenu {
         setContentView(R.layout.activity_main);
         pruebaMD5();
         ConfiguraMenuBar();
-
-
 
         FragmentManager FM = this.getFragmentManager();
         FragmentTransaction FT = FM.beginTransaction();

@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cor.luis.administrator.pruebaandroid.R;
+import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.loginJSON.JsonLoginParser;
 import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.loginJSON.JsonServicioLogin;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudLogin;
 import com.cor.luis.administrator.pruebaandroid.controlador.loggin.logginEvento;
@@ -65,7 +66,8 @@ public class FragmentLogin extends Fragment {
 
                             URL url = new URL("http://directotesting.igapps.co/application/login?email=" + email.getText().toString().trim() + "&amp;password=" + password.getText().toString().trim());
 
-                            JsonServicioLogin servicioLogin = new JsonServicioLogin();
+                            JsonLoginParser jsonLoginParser = new JsonLoginParser();
+                            JsonServicioLogin servicioLogin = new JsonServicioLogin(jsonLoginParser);
                             servicioLogin.execute(url);
                             Login login = servicioLogin.get();
                             login.setPassword(password.getText().toString().trim());

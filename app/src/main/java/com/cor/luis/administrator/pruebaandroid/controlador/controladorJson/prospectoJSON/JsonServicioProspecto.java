@@ -18,8 +18,11 @@ public class JsonServicioProspecto extends AsyncTask<URL, Void, List<Prospecto>>
     HttpURLConnection con = null;
     private String Tokenstr = "";
 
-    public JsonServicioProspecto(String token){
+    private JsonProspectoParser jsonProspectoParser;
+
+    public JsonServicioProspecto(String token, JsonProspectoParser jsonProspectoParser){
         setTokenstr(token);
+        this.setJsonProspectoParser(jsonProspectoParser);
     }
 
     @Override
@@ -42,7 +45,7 @@ public class JsonServicioProspecto extends AsyncTask<URL, Void, List<Prospecto>>
                 throw new Exception("Error en fuente de datos");
             }else{
                 InputStream in = new BufferedInputStream(con.getInputStream());
-                JsonProspectoParser parser= new JsonProspectoParser();
+                JsonProspectoParser parser= this.getJsonProspectoParser();
                 prospectos=parser.readJsonStream(in);
             }
         }
@@ -62,5 +65,13 @@ public class JsonServicioProspecto extends AsyncTask<URL, Void, List<Prospecto>>
 
     public void setTokenstr(String tokenstr) {
         Tokenstr = tokenstr;
+    }
+
+    public JsonProspectoParser getJsonProspectoParser() {
+        return jsonProspectoParser;
+    }
+
+    public void setJsonProspectoParser(JsonProspectoParser jsonProspectoParser) {
+        this.jsonProspectoParser = jsonProspectoParser;
     }
 }

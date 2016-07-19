@@ -1,5 +1,6 @@
 package com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.loginJSON;
 
+import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.JsonParser;
 import com.cor.luis.administrator.pruebaandroid.modelo.Login;
 
 import org.json.JSONArray;
@@ -14,8 +15,9 @@ import java.io.InputStreamReader;
 /**
  * Created by Administrator on 15/07/2016.
  */
-public class JsonLoginParser {
+public class JsonLoginParser extends JsonParser {
 
+    @Override
     public Login readJsonStream(InputStream in) {
         Login login = new Login();
 
@@ -39,24 +41,4 @@ public class JsonLoginParser {
         return login;
     }
 
-    private String convertStreamToString(InputStream is) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append('\n');
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
-    }
 }

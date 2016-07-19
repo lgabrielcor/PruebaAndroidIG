@@ -3,16 +3,15 @@ package com.cor.luis.administrator.pruebaandroid.vista.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.cor.luis.administrator.pruebaandroid.R;
 import com.cor.luis.administrator.pruebaandroid.controlador.adapter.ProspectosAdapterList;
+import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.prospectoJSON.JsonProspectoParser;
 import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.prospectoJSON.JsonServicioProspecto;
 import com.cor.luis.administrator.pruebaandroid.controlador.dao.CrudProspecto;
 import com.cor.luis.administrator.pruebaandroid.controlador.loggin.logginEvento;
@@ -30,61 +29,38 @@ import java.util.concurrent.ExecutionException;
  */
 public class FragmentProspecto extends Fragment {
 
+    private String token;
+    private View view;
+    private ProspectosAdapterList adaptador;
 
     public FragmentProspecto() {
-        // Required empty public constructor
+        this.setToken("");
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_prospecto, container, false);
+        setView(inflater.inflate(R.layout.fragment_prospecto, container, false));
         Bundle bundle = getArguments();
 
-        String token="";
-        if(bundle != null)
-          token = bundle.getString("TOKEN");
+        if (bundle != null)
+            setToken(bundle.getString("TOKEN"));
 
-        ListView prospectoListView = (ListView)view.findViewById(R.id.listViewProspecto);
-
-
+        ListView prospectoListView = (ListView) getView().findViewById(R.id.listViewProspecto);
         CrudProspecto crudProspecto = new CrudProspecto(getActivity().getApplicationContext());
-
         List<Object> prospectos = crudProspecto.obtenerTodosLosItems();
 
-        ProspectosAdapterList adaptador;
-
-        if(prospectos.size()>0){
-            adaptador = new ProspectosAdapterList(getActivity(), prospectos);
-            logginEvento.insertaLog(getActivity().getApplicationContext(),"Se obtiene los prospectos de la base de datos");
-        }else
-        {
-            List<Prospecto> prospectos1 = new ArrayList<>();
-            try {
-                JsonServicioProspecto json = new JsonServicioProspecto(token);
-                json.execute(new URL("http://directotesting.igapps.co/sch/prospects.json"));
-                prospectos1 = json.get();
-
-                crudProspecto.borrarTodosLosItems();
-                crudProspecto.insertaLista(prospectos1);
-                logginEvento.insertaLog(getActivity().getApplicationContext(),"Se obtienen los prospectos del servicio internet");
-            }
-            catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-            catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-            adaptador = new ProspectosAdapterList(getActivity(), prospectos1);
+        if (prospectos.size() > 0) {
+            setAdaptador(new ProspectosAdapterList(getActivity(), prospectos));
+            logginEvento.insertaLog(getActivity().getApplicationContext(), "Se obtiene los prospectos de la base de datos");
+        } else {
+            this.getProspectos(crudProspecto);
             prospectos = crudProspecto.obtenerTodosLosItems();
         }
 
 
-        prospectoListView.setAdapter(adaptador);
+        prospectoListView.setAdapter(getAdaptador());
 
         final List<Object> finalProspectos = prospectos;
         prospectoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -95,11 +71,11 @@ public class FragmentProspecto extends Fragment {
                 Bundle bundle = new Bundle();
 
                 Prospecto prospecto = (Prospecto) finalProspectos.get(position);
-                bundle.putString("nombre",prospecto.getNombre());
-                bundle.putString("apellido",prospecto.getApellido());
-                bundle.putString("cedula",prospecto.getCedula());
-                bundle.putString("telefono",prospecto.getTelefono());
-                bundle.putString("estado",prospecto.getEstado()+"");
+                bundle.putString("nombre", prospecto.getNombre());
+                bundle.putString("apellido", prospecto.getApellido());
+                bundle.putString("cedula", prospecto.getCedula());
+                bundle.putString("telefono", prospecto.getTelefono());
+                bundle.putString("estado", prospecto.getEstado() + "");
 
 
                 fragment.setArguments(bundle);
@@ -109,8 +85,54 @@ public class FragmentProspecto extends Fragment {
             }
         });
 
-        return view;
+        return getView();
+    }
+
+    private void getProspectos(CrudProspecto crudProspecto) {
+        List<Prospecto> prospectos1 = new ArrayList<>();
+        try {
+            JsonProspectoParser jsonProspectoParser = new JsonProspectoParser();
+            JsonServicioProspecto json = new JsonServicioProspecto(getToken(), jsonProspectoParser);
+            json.execute(new URL("http://directotesting.igapps.co/sch/prospects.json"));
+            prospectos1 = json.get();
+
+            crudProspecto.borrarTodosLosItems();
+            crudProspecto.insertaLista(prospectos1);
+            logginEvento.insertaLog(getActivity().getApplicationContext(), "Se obtienen los prospectos del servicio internet");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        setAdaptador(new ProspectosAdapterList(getActivity(), prospectos1));
     }
 
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @android.support.annotation.Nullable
+    @Override
+    public View getView() {
+        return view;
+    }
+
+    public void setView(View view) {
+        this.view = view;
+    }
+
+    public ProspectosAdapterList getAdaptador() {
+        return adaptador;
+    }
+
+    public void setAdaptador(ProspectosAdapterList adaptador) {
+        this.adaptador = adaptador;
+    }
 }

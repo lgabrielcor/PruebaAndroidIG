@@ -3,6 +3,7 @@ package com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.pro
 
 import android.support.annotation.NonNull;
 
+import com.cor.luis.administrator.pruebaandroid.controlador.controladorJson.JsonParser;
 import com.cor.luis.administrator.pruebaandroid.modelo.Login;
 import com.cor.luis.administrator.pruebaandroid.modelo.Prospecto;
 
@@ -20,8 +21,9 @@ import java.util.List;
 /**
  * Created by luisgabrielcorredorcombita on 15/07/16.
  */
-public class JsonProspectoParser {
+public class JsonProspectoParser extends JsonParser {
 
+    @Override
     public List<Prospecto> readJsonStream(InputStream in) {
 
         List<Prospecto> prospectos = new ArrayList<>();
@@ -53,29 +55,5 @@ public class JsonProspectoParser {
         prospecto.setEstado(jsonObject.getInt("statusCd"));
         prospecto.setTelefono(jsonObject.getString("telephone"));
     }
-
-
-    @NonNull
-    private String convertStreamToString(InputStream is) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append('\n');
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
-    }
-
 
 }
